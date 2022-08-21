@@ -11,11 +11,6 @@ use Illuminate\Http\Request;
 
 class LogStatusController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $logsStatuses = LogStatus::all();
@@ -25,31 +20,12 @@ class LogStatusController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreLogStatusRequest $request)
     {
         $cart_id = $request->input('cart_id');
-        $carts = Cart::where('id', $cart_id)->select('status')->get();
+        $cart = Cart::where('id', $cart_id)->select('status')->get()->first();
 
-        $status = "";
-        foreach ($carts as $cart) {
-            $status = $cart->status;
-        }
+        $status = $cart["status"];
 
         $request->merge(['status' => $status]);
         $logStatus = LogStatus::create($request->all());
@@ -60,35 +36,6 @@ class LogStatusController extends Controller
         ], 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\LogStatus  $logStatus
-     * @return \Illuminate\Http\Response
-     */
-    public function show(LogStatus $logStatus)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\LogStatus  $logStatus
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(LogStatus $logStatus)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\LogStatus  $logStatus
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdateLogStatusRequest $request, LogStatus $logStatus)
     {
         $logStatus->update($request->all());
@@ -99,12 +46,6 @@ class LogStatusController extends Controller
         ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\LogStatus  $logStatus
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(LogStatus $logStatus)
     {
         $logStatus->delete();

@@ -15,9 +15,7 @@ class LogStatusController extends Controller
     {
         $logsStatuses = LogStatus::all();
 
-        return response()->json([
-            'logsStatuses' => $logsStatuses
-        ]);
+        return response()->json($logsStatuses);
     }
 
     public function store(StoreLogStatusRequest $request)

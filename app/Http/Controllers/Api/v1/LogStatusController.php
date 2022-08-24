@@ -14,16 +14,13 @@ class LogStatusController extends Controller
     public function index()
     {
         $logsStatuses = LogStatus::all();
-
         return response()->json($logsStatuses);
     }
 
     public function store(StoreLogStatusRequest $request)
     {
         $cart_id = $request->input('cart_id');
-        $cart = Cart::where('id', $cart_id)->select('status')->get()->first();
-
-        $status = $cart["status"];
+        $status = Cart::where('id', $cart_id)->value('status');
 
         $request->merge(['status' => $status]);
         $logStatus = LogStatus::create($request->all());
@@ -32,6 +29,12 @@ class LogStatusController extends Controller
             'message' => "Log saved successfully.",
             'logStatus' => $logStatus
         ], 200);
+    }
+
+    public function show($id)
+    {
+        $logStatus = LogStatus::find($id);
+        return response()->json($logStatus);
     }
 
     public function update(UpdateLogStatusRequest $request, LogStatus $logStatus)

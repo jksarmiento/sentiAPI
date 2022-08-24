@@ -14,16 +14,13 @@ class LogLocationController extends Controller
     public function index()
     {
         $logsLocations = LogLocation::all();
-
         return response()->json($logsLocations);
     }
 
     public function store(StoreLogLocationRequest $request)
     {
         $cart_id = $request->input('cart_id');
-        $cart = Cart::where('id', $cart_id)->select('current_location_id')->get()->first();
-
-        $location_id = $cart['current_location_id'];
+        $location_id = Cart::where('id', $cart_id)->value('current_location_id');
 
         $request->merge(['location_id' => $location_id]);
         $logLocation = LogLocation::create($request->all());
@@ -32,6 +29,12 @@ class LogLocationController extends Controller
             'message' => "Log saved successfully.",
             'logLocation' => $logLocation,
         ], 200);
+    }
+
+    public function show($id)
+    {
+        $logLocation = LogLocation::find($id);
+        return response()->json($logLocation);
     }
 
     public function update(UpdateLogLocationRequest $request, LogLocation $logLocation)

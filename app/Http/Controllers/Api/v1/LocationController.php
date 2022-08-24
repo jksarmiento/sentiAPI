@@ -13,7 +13,6 @@ class LocationController extends Controller
     public function index()
     {
         $locations = Location::all();
-
         return response()->json($locations);
     }
 
@@ -25,6 +24,12 @@ class LocationController extends Controller
             'message' => "Location saved successfully.",
             'location' => $location
         ], 200);
+    }
+
+    public function show($id)
+    {
+        $location = Location::find($id);
+        return response()->json($location);
     }
 
     public function update(UpdateLocationRequest $request, Location $location)

@@ -27,6 +27,12 @@ class CartController extends Controller
         ], 200);
     }
 
+    public function show($id)
+    {
+        $cart = Cart::find($id);
+        return response()->json($cart);
+    }
+
     public function update(UpdateCartRequest $request, Cart $cart)
     {
         $cart->update($request->all());
